@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slidePattern {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 64px -64px;
+  }
+}
+
+/* Custom Scrollbar */
+@layer utilities {
+  .custom-scrollbar {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* Firefox */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    transition: background-color 0.2s;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* When the scrollbar is in a dark container */
+  .custom-scrollbar-dark {
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .custom-scrollbar-dark::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .custom-scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Adjust text colors based on background */
+[class*='warm-gray-'] {
+  @apply text-gray-100;
+}
+
+/* Add some subtle texture to the pastel background */
+.from-pastel-purple {
+  background-blend-mode: soft-light;
+  backdrop-filter: blur(100px);
+}
+
+.paperbg {
+  background-image: url('https://raw.githubusercontent.com/artificialhobo/konofan-asorted-assets/refs/heads/main/static/bg_paper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
