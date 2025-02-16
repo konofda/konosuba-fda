@@ -105,12 +105,29 @@ export function ModelsLive2DPage() {
               Live2D Implementation Needed!
             </h2>
             <p className="text-sm text-white/80 mb-4">
-              Shoutout to Konofan for this amazing collection of Live2D models!
+              Shoutout to{' '}
+              <a
+                href="https://github.com/HaiKonofanDesu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 underline"
+              >
+                HaiKonofanDesu
+              </a>{' '}
+              for sharing{' '}
+              <a
+                href="https://github.com/HaiKonofanDesu/konofan-live2d"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 underline"
+              >
+                KonoSuba FD Live2D models on Github
+              </a>!
               I'm looking for help to get them working here - if you know your
-              way around Live2D Cubism, drop by and lend a hand!
+              way around Cubism, drop by and lend a hand!
             </p>
             <a
-              href="https://github.com/HaiKonofanDesu/konofan-assets-jp-sortet"
+              href="https://github.com/konofda/konosuba-fda"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg
