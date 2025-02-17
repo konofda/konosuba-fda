@@ -1,5 +1,5 @@
 import { Eye, EyeOff, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { ASSET_URL_BASE } from '@/constants';
 import { useStoryStillData } from '@/hooks/useStoryStillData';
@@ -13,65 +13,36 @@ const sizeOptions: ZoomOption[] = [
   { label: 'Large', value: 1.0, icon: <Maximize2 className="w-4 h-4" /> },
 ];
 
-type StoryStillProps = {
-  id: string;
-  splash: string;
-  icon: string | null;
-  index: number;
-  total: number;
-};
-
 export function StoryStillsPage() {
   const [scale, setScale] = useState<number>(sizeOptions[1].value);
-  const [showAllStills, setShowAllStills] = useState(false);
+  const [showOnlyWithIcons, setShowOnlyWithIcons] = useState(true);
   const { data, isLoading, error } = useStoryStillData();
 
-  const flattenedStills = useMemo(() => {
-    if (!data) return [];
-
-    return data.reduce((acc, still) => {
-      // Only process stills that have actual still images
-      if (still.stills.length === 0) return acc;
-
-      // Filter stills based on showAllStills
-      const stillsToProcess = showAllStills
-        ? still.stills
-        : still.stills.slice(0, 1);
-
-      // Add each still with its parent's metadata
-      const stillsWithMetadata = stillsToProcess.map((stillUrl, index) => ({
-        id: still.id,
-        splash: stillUrl,
-        icon: still.icon_still,
-        index: index + 1,
-        total: still.stills.length,
-      }));
-
-      return [...acc, ...stillsWithMetadata];
-    }, [] as StoryStillProps[]);
-  }, [data, showAllStills]);
+  const stills = data?.filter(still => 
+    showOnlyWithIcons ? !!still.icon_still : true
+  ) ?? [];
 
   const controls = (
     <div className="flex items-center gap-4">
       <button
-        onClick={() => setShowAllStills(!showAllStills)}
+        onClick={() => setShowOnlyWithIcons(!showOnlyWithIcons)}
         className={`
           flex items-center gap-2 px-3 py-1 rounded
           transition-all duration-200 text-sm
           ${
-            showAllStills
+            showOnlyWithIcons
               ? 'text-gray-300 hover:text-white'
               : 'bg-white text-gray-800 shadow'
           }
         `}
       >
-        {showAllStills ? (
+        {showOnlyWithIcons ? (
           <Eye className="w-4 h-4" />
         ) : (
           <EyeOff className="w-4 h-4" />
         )}
         <span className="font-medium">
-          {showAllStills ? 'Showing all stills' : 'First stills only'}
+          {showOnlyWithIcons ? 'Showing only with icons' : 'Showing all stills'}
         </span>
       </button>
       <ZoomControls options={sizeOptions} value={scale} onChange={setScale} />
@@ -111,60 +82,53 @@ export function StoryStillsPage() {
       <Header title="Story Stills">{controls}</Header>
       <div className="container mx-auto py-8">
         <div className={innerContainerClasses} style={{ zoom: scale }}>
-          {flattenedStills.map((still) => {
-            const hasIcon = !!still.icon;
-            const isFirstStill = still.index === 1;
-            const iconSrc = !hasIcon
-              ? './img/frame_missing.png'
-              : !isFirstStill
-                ? './img/frame_na.png'
-                : ASSET_URL_BASE + still.icon;
+          {stills.map((still) => {
+            const hasIcon = !!still.icon_still;
+            const hasStill = !!still.still;
+            const iconSrc = hasIcon
+              ? ASSET_URL_BASE + still.icon_still
+              : './img/frame_missing.png';
 
             return (
               <div
-                key={`${still.id}-${still.index}`}
+                key={still.id}
                 className="group inline-block align-top m-1 relative"
               >
                 <div
-                  onClick={() => handleClick(still.splash)}
-                  className="
+                  onClick={hasStill ? () => handleClick(still.still) : undefined}
+                  className={`
                     relative rounded-lg shadow-md transition-all duration-200
-                    cursor-pointer hover:scale-105 hover:shadow-xl hover:z-10
-                  "
+                    ${hasStill ? 'cursor-pointer hover:scale-105 hover:shadow-xl hover:z-10' : 'cursor-not-allowed opacity-100'}
+                  `}
                 >
                   <LoadingImage
                     src={iconSrc}
                     placeholderSrc="./img/middle_icon_placeholder.png"
-                    alt={`Still ${still.id}-${still.index}`}
+                    alt={`Still ${still.id}`}
                   />
                 </div>
                 <div
                   className="
-                  absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full pt-2
-                  opacity-0 group-hover:opacity-100
-                  transition-all duration-200 z-20
-                  pointer-events-none
-                "
+                    absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full pt-2
+                    opacity-0 group-hover:opacity-100
+                    transition-all duration-200 z-20
+                    pointer-events-none
+                  "
                 >
                   <div
                     className="
-                    bg-black/80 backdrop-blur-sm rounded px-2 py-1
-                    text-center whitespace-nowrap
-                  "
+                      bg-black/80 backdrop-blur-sm rounded px-2 py-1
+                      text-center whitespace-nowrap
+                    "
                   >
                     <p className="text-white font-bold text-lg">
                       ID: {still.id}
                     </p>
-                    {still.total > 1 && (
-                      <p className="text-gray-300 text-sm">
-                        Still {still.index} of {still.total}
-                      </p>
-                    )}
                     {!hasIcon && (
                       <p className="text-yellow-400 text-sm">Missing icon</p>
                     )}
-                    {hasIcon && !isFirstStill && (
-                      <p className="text-yellow-400 text-sm">Icon mismatch</p>
+                    {!hasStill && (
+                      <p className="text-yellow-400 text-sm">Missing still</p>
                     )}
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { Eye, EyeOff, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 
 import { ASSET_URL_BASE } from '@/constants';
 import { useStoryBackgroundData } from '@/hooks/useStoryBackgroundData';
@@ -15,15 +15,41 @@ const sizeOptions: ZoomOption[] = [
 
 export function StoryBackgroundsPage() {
   const [scale, setScale] = useState<number>(sizeOptions[1].value);
+  const [showOnlyWithIcons, setShowOnlyWithIcons] = useState(true);
   const { data, isLoading, error } = useStoryBackgroundData();
 
-  const processedData = useMemo(
-    () => (data ? data.filter((story) => story.bg) : []),
-    [data]
-  );
+  const backgrounds = useMemo(() => {
+    if (!data) return [];
+    return data
+      .filter(bg => bg.bg) // Remove entries without bg path
+      .filter(bg => showOnlyWithIcons ? !!bg.icon_bg : true);
+  }, [data, showOnlyWithIcons]);
 
   const controls = (
-    <ZoomControls options={sizeOptions} value={scale} onChange={setScale} />
+    <div className="flex items-center gap-4">
+      <button
+        onClick={() => setShowOnlyWithIcons(!showOnlyWithIcons)}
+        className={`
+          flex items-center gap-2 px-3 py-1 rounded
+          transition-all duration-200 text-sm
+          ${
+            showOnlyWithIcons
+              ? 'text-gray-300 hover:text-white'
+              : 'bg-white text-gray-800 shadow'
+          }
+        `}
+      >
+        {showOnlyWithIcons ? (
+          <Eye className="w-4 h-4" />
+        ) : (
+          <EyeOff className="w-4 h-4" />
+        )}
+        <span className="font-medium">
+          {showOnlyWithIcons ? 'Showing only with icons' : 'Showing all backgrounds'}
+        </span>
+      </button>
+      <ZoomControls options={sizeOptions} value={scale} onChange={setScale} />
+    </div>
   );
 
   if (isLoading) {
@@ -59,7 +85,7 @@ export function StoryBackgroundsPage() {
       <Header title="Story Backgrounds">{controls}</Header>
       <div className="container mx-auto py-8 w-full">
         <div className={innerContainerClasses} style={{ zoom: scale }}>
-          {processedData.map((story) => {
+          {backgrounds.map((story) => {
             const hasIcon = !!story.icon_bg;
 
             return (
@@ -78,7 +104,7 @@ export function StoryBackgroundsPage() {
                     src={
                       hasIcon
                         ? ASSET_URL_BASE + story.icon_bg
-                        : './img/frame_na.png'
+                        : './img/frame_missing.png'
                     }
                     placeholderSrc="./img/middle_icon_placeholder.png"
                     alt={`Background ${story.id}`}
