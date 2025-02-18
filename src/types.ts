@@ -5,6 +5,7 @@ export interface CardData {
   rarity: number;
   event: string;
   base_id: string;
+  character_id: string;
   full_card: string;
   icon_small: string;
   icon_middle: string;
@@ -32,11 +33,13 @@ export interface Live2DModel {
 }
 
 export interface SpineModel {
+  id: string;
   name: string;
-  character_base_id: string;
-  character_name: string;
-  path_json: string;
+  base_id: string;
+  character_id: string;
   category: 'ally' | 'enemy' | 'assist';
+  path: string;
+  unlock_member_id?: string;
 }
 
 export type IconSize = 'small' | 'middle' | 'large';

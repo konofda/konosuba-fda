@@ -3,14 +3,14 @@ import { API_URL_BASE } from '@/constants';
 import type { SpineModel } from '@/types';
 
 async function fetchSpineData(): Promise<SpineModel[]> {
-  const response = await fetch(API_URL_BASE + 'v0/spines.json');
+  console.log('🔄 Fetching spine data from new API endpoint');
+  const response = await fetch(API_URL_BASE + '/v1/all-models-spine.json');
   if (!response.ok) {
     throw new Error('Failed to fetch spine data');
   }
   const data = await response.json();
-
-  // Filter out entries with .json files
-  return data.filter((model: SpineModel) => !model.path_json.endsWith('.json'));
+  console.log('✅ Successfully fetched spine data:', data.length, 'models');
+  return data;
 }
 
 export function useSpineData() {

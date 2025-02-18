@@ -1,25 +1,25 @@
 import { ComponentType } from 'react';
-import { MemberCharactersListPage } from './components/pages/MemberCharactersListPage';
-import { MemberCharactersCarouselPage } from './components/pages/MemberCharactersCarouselPage';
-import { MemberCardsPage } from './components/pages/MemberCardsPage';
-import { MemberSmallIconsPage } from './components/pages/MemberSmallIconsPage';
-import { ModelsSpineGridPage } from './components/pages/ModelsSpineGridPage';
-import { ModelsLive2DPage } from './components/pages/ModelsLive2DPage';
-import { ModelsSpineListPage } from './components/pages/ModelsSpineListPage';
-import { StoryBackgroundsPage } from './components/pages/StoryBackgroundsPage';
-import { StoryStillsPage } from './components/pages/StoryStillsPage';
-import { MemberTallIconsPage } from './components/pages/MemberTallIconsPage';
-import { VideosPage } from './components/pages/VideosPage';
-import { StoryScriptsPage } from './components/pages/StoryScriptsPage';
-import { TitlePage } from './components/pages/TitlePage';
-import { MusicPage } from './components/pages/MusicPage';
-import { SongsPage } from './components/pages/SongsPage';
-import { StoryIconsPage } from './components/pages/StoryIconsPage';
 import { GalleryItemsPage } from './components/pages/GalleryItemsPage';
-import { ItemsWeaponPage } from './components/pages/ItemsWeaponPage';
 import { ItemsAccessoryPage } from './components/pages/ItemsAccessoryPage';
 import { ItemsMiscPage } from './components/pages/ItemsMiscPage';
+import { ItemsWeaponPage } from './components/pages/ItemsWeaponPage';
+import { MemberCardsPage } from './components/pages/MemberCardsPage';
+import { MemberCharactersCarouselPage } from './components/pages/MemberCharactersCarouselPage';
+import { MemberCharactersListPage } from './components/pages/MemberCharactersListPage';
+import { MemberSmallIconsPage } from './components/pages/MemberSmallIconsPage';
+import { MemberTallIconsPage } from './components/pages/MemberTallIconsPage';
+import { ModelsLive2DPage } from './components/pages/ModelsLive2DPage';
+import { ModelsSpineGridPage } from './components/pages/ModelsSpineGridPage';
+import { MusicPage } from './components/pages/MusicPage';
+import { PixiDemoPage } from './components/pages/PixiDemoPage';
 import { RoulettePage } from './components/pages/RoulettePage';
+import { SongsPage } from './components/pages/SongsPage';
+import { StoryBackgroundsPage } from './components/pages/StoryBackgroundsPage';
+import { StoryIconsPage } from './components/pages/StoryIconsPage';
+import { StoryScriptsPage } from './components/pages/StoryScriptsPage';
+import { StoryStillsPage } from './components/pages/StoryStillsPage';
+import { TitlePage } from './components/pages/TitlePage';
+import { VideosPage } from './components/pages/VideosPage';
 
 export const ASSET_URL_BASE =
   'https://raw.githubusercontent.com/HaiKonofanDesu/konofan-assets-jp-sortet/main/';
@@ -161,12 +161,13 @@ export const ROUTES: Required<RouteConfig>[] = [
     type: 'primary',
   },
   {
-    path: 'spine-animations',
-    label: 'Spine Animations',
-    view: ModelsSpineListPage,
-    backgroundClass:
-      'bg-gradient-to-br from-violet-950 via-purple-900 to-fuchsia-950',
-    patternColor: '#C084FC33',
+    path: 'pixi-demo',
+    label: 'PixiJS Demo',
+    view: PixiDemoPage,
+    backgroundClass: 'bg-gradient-to-br from-gray-950 via-zinc-900 to-gray-950',
+    patternColor: '#0002',
+    patternScale: 1.0,
+    type: 'secondary',
     disabled: true,
   },
   {
@@ -232,7 +233,8 @@ export const ROUTES: Required<RouteConfig>[] = [
     path: 'roulette',
     label: 'Roulette',
     view: RoulettePage,
-    backgroundClass: 'bg-gradient-to-br from-amber-950 via-yellow-900 to-amber-950',
+    backgroundClass:
+      'bg-gradient-to-br from-amber-950 via-yellow-900 to-amber-950',
     patternColor: '#0002',
     patternScale: 1.0,
     type: 'secondary',

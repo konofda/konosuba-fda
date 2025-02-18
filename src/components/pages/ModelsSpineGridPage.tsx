@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Header } from '@/components/Header';
 import { useSpineData } from '@/hooks/useSpineData';
 import { SpinePlayer } from '@/components/SpinePlayer';
+import { useCharacterData } from '@/hooks/useCharacterData';
 
 const ASSET_BASE_URL =
   'https://raw.githubusercontent.com/HaiKonofanDesu/konofan-assets-jp-sortet/main/';
@@ -31,73 +32,86 @@ function DebugView({ urls }: { urls: SpineUrls }) {
   );
 }
 
-function getSpineUrls(pathJson: string): SpineUrls {
-  const jsonUrl = ASSET_BASE_URL + pathJson;
+function getSpineUrls(path: string): SpineUrls {
+  const jsonUrl = ASSET_BASE_URL + path;
   const atlasUrl = jsonUrl.replace(/\.(txt|json)$/, '.atlas');
   return { jsonUrl, atlasUrl };
 }
 
 export function ModelsSpineGridPage() {
   const { data, isLoading, error } = useSpineData();
+  const { data: characterData } = useCharacterData();
   const [selectedCategory, setSelectedCategory] = useState<Category>('ally');
   const [currentPage, setCurrentPage] = useState(1);
   const [debugMode, setDebugMode] = useState(false);
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(
-    null
-  );
+  const [selectedCharacter, setSelectedCharacter] = //
+    useState<string | null>(null);
 
   // Get characters and set initial selected character
-  const { filteredModels, characters, totalPages, totalModels } =
-    useMemo(() => {
-      if (!data)
-        return {
-          filteredModels: [],
-          characters: [],
-          totalPages: 0,
-          totalModels: 0,
-        };
-
-      // First, filter by category
-      let models = data.filter((model) => model.category === selectedCategory);
-
-      // Get unique character names for ally category without sorting
-      const chars =
-        selectedCategory === 'ally'
-          ? Array.from(
-              new Set(models.map((m) => m.character_name).filter(Boolean))
-            )
-          : [];
-
-      // For ally category, filter by selected character
-      if (selectedCategory === 'ally' && selectedCharacter) {
-        models = models.filter(
-          (model) => model.character_name === selectedCharacter
-        );
-      }
-
-      const total = models.length;
-      const pages = Math.ceil(total / ITEMS_PER_PAGE);
-
-      // Get current page's models
-      const start = (currentPage - 1) * ITEMS_PER_PAGE;
-      const pageModels = models.slice(start, start + ITEMS_PER_PAGE);
-
-      // If no character is selected and we have characters, select the first one
-      if (
-        selectedCategory === 'ally' &&
-        !selectedCharacter &&
-        chars.length > 0
-      ) {
-        setSelectedCharacter(chars[0]);
-      }
-
+  const {
+    filteredModels,
+    characters,
+    totalPages,
+    totalModels,
+    characterNames,
+  } = useMemo(() => {
+    if (!data)
       return {
-        filteredModels: pageModels,
-        characters: chars,
-        totalPages: pages,
-        totalModels: total,
+        filteredModels: [],
+        characters: [],
+        totalPages: 0,
+        totalModels: 0,
+        characterNames: new Map(),
       };
-    }, [data, selectedCategory, currentPage, selectedCharacter]);
+
+    // Create a map of base_id to character names
+    const charNames = new Map<string, string>();
+    if (characterData) {
+      characterData.forEach((char) => {
+        charNames.set(char.base_id, char.name);
+      });
+    }
+
+    // First, filter by category and ensure uniqueness by path
+    let models = Array.from(
+      new Map(
+        data
+          .filter((model) => model.category === selectedCategory)
+          .map(model => [model.id, model])
+      ).values()
+    );
+
+    // Get unique base_ids for ally category without sorting
+    const chars =
+      selectedCategory === 'ally'
+        ? Array.from(new Set(models.map((m) => m.base_id).filter(Boolean)))
+        : [];
+
+    // For ally category, filter by selected character
+    if (selectedCategory === 'ally' && selectedCharacter) {
+      models = models.filter((model) => model.base_id === selectedCharacter);
+    }
+
+    const total = models.length;
+    const pages = Math.ceil(total / ITEMS_PER_PAGE);
+
+    // Get current page's models
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageModels = models.slice(start, start + ITEMS_PER_PAGE);
+
+    // If no character is selected and we have characters, select the first one
+    if (selectedCategory === 'ally' && !selectedCharacter && chars.length > 0) {
+      setSelectedCharacter(chars[0]);
+    }
+
+    return {
+      filteredModels: pageModels,
+      characters: chars,
+      totalPages: pages,
+      totalModels: total,
+      characterNames: charNames,
+    };
+  }, [data, characterData, selectedCategory, currentPage, selectedCharacter]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -197,7 +211,7 @@ export function ModelsSpineGridPage() {
                     }
                   `}
                 >
-                  {char}
+                  {characterNames.get(char) || char}
                 </button>
               ))}
             </div>
@@ -249,12 +263,13 @@ export function ModelsSpineGridPage() {
 
         {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+
           {filteredModels.map((model) => {
-            const urls = getSpineUrls(model.path_json);
+            const urls = getSpineUrls(model.path);
 
             return (
               <div
-                key={model.path_json}
+                key={model.path}
                 className="aspect-square bg-[#20232f] rounded-lg overflow-hidden
                   ring-1 ring-white/5 shadow-md
                   hover:ring-white/10 hover:shadow-lg
@@ -266,7 +281,11 @@ export function ModelsSpineGridPage() {
                   <SpinePlayer
                     {...urls}
                     onError={(error) =>
-                      console.error('Failed to load spine:', model.name, error)
+                      console.error(
+                        '❌ Failed to load spine:',
+                        model.name,
+                        error
+                      )
                     }
                   />
                 )}

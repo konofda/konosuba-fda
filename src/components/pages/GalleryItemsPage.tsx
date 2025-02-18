@@ -138,9 +138,11 @@ export function GalleryItemsPage() {
                     Stills
                   </h3>
                   <div className="-m-0.5">
-                    {section.stills.map((still) =>
-                      renderThumbnail(still.still, `Still ${still.still}`)
-                    )}
+                    {section.stills.map((still) => (
+                      <div key={still.id}>
+                        {renderThumbnail(still.still, `Still ${still.still}`)}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
