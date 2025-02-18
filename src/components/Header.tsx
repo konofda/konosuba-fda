@@ -27,7 +27,7 @@ export function Header({ title, children }: HeaderProps) {
   );
 
   return (
-    <header className="sticky top-0 bg-[#1a1614]/80 backdrop-blur-sm shadow-lg border-b border-white/5 z-50">
+    <header className="sticky top-0 bg-[#1a1614]/80 backdrop-blur-sm shadow-lg border-b border-white/5 z-50 animate-slideInDown">
       <div className="mx-auto px-4 h-12 flex items-center">
         <div className="relative">
           <div className="ml-auto flex items-center gap-2">

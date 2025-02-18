@@ -1,6 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { SpineModel } from '@/types';
+
+/* 🎉 Moved type definition from src/types.ts: SpineModel */
+export interface SpineModel {
+  id: string;
+  name: string;
+  base_id: string;
+  character_id: string;
+  category: 'ally' | 'enemy' | 'assist';
+  path: string;
+  unlock_member_id?: string;
+}
 
 async function fetchSpineData(): Promise<SpineModel[]> {
   console.log('🔄 Fetching spine data from new API endpoint');

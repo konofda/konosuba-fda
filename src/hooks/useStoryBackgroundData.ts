@@ -1,6 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { StoryData } from '@/types';
+
+/* 🎉 Moved type definition from src/types.ts: StoryData */
+export interface StoryData {
+  id: string;
+  bg: string;
+  icon_bg: string | null;
+}
 
 async function fetchStoryData(): Promise<StoryData[]> {
   const response = await fetch(API_URL_BASE + 'v0/stories.json');

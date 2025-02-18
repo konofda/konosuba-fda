@@ -1,6 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
 
+/* 🎉 Moved type definition from src/types.ts: StillData */
+export interface StillData {
+  id: string;
+  stills: string[];
+  icon_still: string | null;
+}
+
 type StoryStill = {
   id: string;
   still: string;

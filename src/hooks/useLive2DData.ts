@@ -1,6 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { Live2DModel } from '@/types';
+
+/* 🎉 Moved type definition from src/types.ts: Live2DModel */
+export interface Live2DModel {
+  base_id: string;
+  character_name: string;
+  model_name: string;
+  path: string;
+  icon_small: string | null;
+}
 
 async function fetchLive2DData(): Promise<Live2DModel[]> {
   const response = await fetch(API_URL_BASE + 'v0/live2d.json');

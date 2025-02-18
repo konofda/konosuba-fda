@@ -1,6 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { VideoData } from '@/types';
+
+/* 🎉 Moved type definition from src/types.ts: VideoData */
+export interface VideoData {
+  path: string;
+  category: string;
+  name: string;
+}
 
 async function fetchVideoData(): Promise<VideoData[]> {
   const response = await fetch(API_URL_BASE + 'v1/videos.json');

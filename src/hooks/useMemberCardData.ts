@@ -1,6 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { CardData } from '@/types';
+
+export interface CardData {
+  id: string;
+  name: string;
+  is_collab: boolean;
+  rarity: number;
+  event: string;
+  base_id: string;
+  character_id: string;
+  full_card: string;
+  icon_small: string;
+  icon_middle: string;
+  icon_large: string;
+}
+
+export type IconSize = 'small' | 'middle' | 'large';
 
 async function fetchCardData(): Promise<CardData[]> {
   const response = await fetch(API_URL_BASE + 'v1/member-cards.json');

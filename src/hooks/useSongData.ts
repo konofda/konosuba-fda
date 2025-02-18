@@ -1,6 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type { SongData } from '@/types';
+
+/* 🎉 Moved type definition from src/types.ts: SongData */
+export interface SongData {
+  movie: string;
+  story_id: string;
+  group_id: string;
+  list_icon: string;
+  title: string;
+  artist_name: string;
+  scale_type: string;
+  display_start: string;
+  title_alt: string;
+  youtube: string[];
+  icon?: string;
+}
 
 async function fetchSongData(): Promise<SongData[]> {
   const response = await fetch(API_URL_BASE + 'v1/gallery-songs.json');

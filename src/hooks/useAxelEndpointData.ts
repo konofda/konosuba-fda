@@ -1,58 +1,48 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL_BASE } from '@/constants';
-import type {
-  Assist, BattleEnemy, Campaign, Character, Costume,
-  DungeonArea, DungeonStage, Dungeon, EquipAccessory, EquipWeapon,
-  EventBossCount, EventConfig, EventMember, EventQuestStage,
-  GachaTab, Gacha, GalleryGroup, GalleryMovie, GalleryStill, Honor, Item,
-  Member, MissionHonor, ShopBalloon, ShopItem, Shop,
-  StoryEtc, StoryEvent, StoryGacha, StoryMain, StoryMember,
-  StoryReminiscence, StoryUnique, TargetCostume, TitleTheme, Voice
-} from '@/types/api-axel';
+import type * as AxelTypes from '@/types/api-axel';
 
 // Type mapping for all Axel endpoints and their return types
 export type AxelEndpoints = {
-  'assist': Assist[];
-  'battle_enemy': BattleEnemy[];
-  'campaign': Campaign[];
-  'character': Character[];
-  'costume': Costume[];
-  'dungeon_area': DungeonArea[];
-  'dungeon_stage': DungeonStage[];
-  'dungeon': Dungeon[];
-  'equip_accessory': EquipAccessory[];
-  'equip_weapon': EquipWeapon[];
-  'event_boss_count': EventBossCount[];
-  'event_config': EventConfig[];
-  'event_member': EventMember[];
-  'event_quest_stage': EventQuestStage[];
-  'gacha_tab': GachaTab[];
-  'gacha': Gacha[];
-  'gallery_group': GalleryGroup[];
-  'gallery_movie': GalleryMovie[];
-  'gallery_still': GalleryStill[];
-  'honor': Honor[];
-  'item': Item[];
-  'member': Member[];
-  'mission_honor': MissionHonor[];
-  'shop_balloon': ShopBalloon[];
-  'shop_item': ShopItem[];
-  'shop': Shop[];
-  'story_etc': StoryEtc[];
-  'story_event': StoryEvent[];
-  'story_gacha': StoryGacha[];
-  'story_main': StoryMain[];
-  'story_member': StoryMember[];
-  'story_reminiscence': StoryReminiscence[];
-  'story_unique': StoryUnique[];
-  'target_costume': TargetCostume[];
-  'title_theme': TitleTheme[];
-  'voice': Voice[];
+  assist: AxelTypes.Assist[];
+  battle_enemy: AxelTypes.BattleEnemy[];
+  campaign: AxelTypes.Campaign[];
+  character: AxelTypes.Character[];
+  costume: AxelTypes.Costume[];
+  dungeon_area: AxelTypes.DungeonArea[];
+  dungeon_stage: AxelTypes.DungeonStage[];
+  dungeon: AxelTypes.Dungeon[];
+  equip_accessory: AxelTypes.EquipAccessory[];
+  equip_weapon: AxelTypes.EquipWeapon[];
+  event_boss_count: AxelTypes.EventBossCount[];
+  event_config: AxelTypes.EventConfig[];
+  event_member: AxelTypes.EventMember[];
+  event_quest_stage: AxelTypes.EventQuestStage[];
+  gacha_tab: AxelTypes.GachaTab[];
+  gacha: AxelTypes.Gacha[];
+  gallery_group: AxelTypes.GalleryGroup[];
+  gallery_movie: AxelTypes.GalleryMovie[];
+  gallery_still: AxelTypes.GalleryStill[];
+  honor: AxelTypes.Honor[];
+  item: AxelTypes.Item[];
+  member: AxelTypes.Member[];
+  mission_honor: AxelTypes.MissionHonor[];
+  shop_balloon: AxelTypes.ShopBalloon[];
+  shop_item: AxelTypes.ShopItem[];
+  shop: AxelTypes.Shop[];
+  story_etc: AxelTypes.StoryEtc[];
+  story_event: AxelTypes.StoryEvent[];
+  story_gacha: AxelTypes.StoryGacha[];
+  story_main: AxelTypes.StoryMain[];
+  story_member: AxelTypes.StoryMember[];
+  story_reminiscence: AxelTypes.StoryReminiscence[];
+  story_unique: AxelTypes.StoryUnique[];
+  target_costume: AxelTypes.TargetCostume[];
+  title_theme: AxelTypes.TitleTheme[];
+  voice: AxelTypes.Voice[];
 };
 
-async function fetchAxelEndpointData<T extends keyof AxelEndpoints>(
-  endpoint: T
-): Promise<AxelEndpoints[T]> {
+async function fetchAxelEndpointData<T extends keyof AxelEndpoints>(endpoint: T): Promise<AxelEndpoints[T]> {
   const response = await fetch(`${API_URL_BASE}axel/${endpoint}.json`);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${endpoint} data`);
@@ -67,4 +57,4 @@ export function useAxelEndpointData<T extends keyof AxelEndpoints>(endpoint: T) 
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
-} 
+}

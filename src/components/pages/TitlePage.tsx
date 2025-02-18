@@ -1,6 +1,7 @@
 import { ROUTES } from '@/constants';
 import { useEffect, useRef, useState } from 'react';
 import { NineSliceImage } from '../common/NineSliceImage';
+import { Header } from '../Header';
 
 const MENU_ROUTES = [
   {
@@ -46,6 +47,7 @@ export function TitlePage() {
 
   return (
     <>
+      {hasStarted ? <Header title="Home" /> : <div className="h-12" />}
       <div
         style={{ backgroundImage: `url(${TEXTURE_BG_PATTERN})` }}
         className="absolute inset-0 w-full h-full invert opacity-5"
