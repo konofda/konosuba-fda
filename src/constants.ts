@@ -1,5 +1,6 @@
 import { ComponentType } from 'react';
 import { GalleryItemsPage } from './components/pages/GalleryItemsPage';
+import { HonorIconsPage } from './components/pages/HonorIconsPage';
 import { ItemsAccessoryPage } from './components/pages/ItemsAccessoryPage';
 import { ItemsMiscPage } from './components/pages/ItemsMiscPage';
 import { ItemsWeaponPage } from './components/pages/ItemsWeaponPage';
@@ -20,6 +21,7 @@ import { StoryScriptsPage } from './components/pages/StoryScriptsPage';
 import { StoryStillsPage } from './components/pages/StoryStillsPage';
 import { TitlePage } from './components/pages/TitlePage';
 import { VideosPage } from './components/pages/VideosPage';
+import { EnemiesPage } from './components/pages/EnemiesPage';
 
 export const ASSET_URL_BASE =
   'https://raw.githubusercontent.com/HaiKonofanDesu/konofan-assets-jp-sortet/main/';
@@ -238,6 +240,26 @@ export const ROUTES: Required<RouteConfig>[] = [
     patternColor: '#0002',
     patternScale: 1.0,
     type: 'secondary',
+    disabled: false,
+  },
+  {
+    path: 'honor-icons',
+    label: 'Honor Icons',
+    view: HonorIconsPage,
+    backgroundClass:
+      'bg-gradient-to-br from-amber-800 via-yellow-700 to-amber-800',
+    patternColor: '#fff2',
+    type: 'primary',
+    disabled: false,
+  },
+  {
+    path: 'enemies',
+    label: 'Enemies',
+    view: EnemiesPage,
+    backgroundClass:
+      'bg-gradient-to-r from-gray-950 via-rose-950 to-gray-950',
+    patternColor: '#0003',
+    type: 'primary',
     disabled: false,
   },
 ].map(
