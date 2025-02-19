@@ -22,6 +22,7 @@ import { StoryStillsPage } from './components/pages/StoryStillsPage';
 import { TitlePage } from './components/pages/TitlePage';
 import { VideosPage } from './components/pages/VideosPage';
 import { EnemiesPage } from './components/pages/EnemiesPage';
+import { DungeonsPage } from './components/pages/DungeonsPage';
 
 export const ASSET_URL_BASE =
   'https://raw.githubusercontent.com/HaiKonofanDesu/konofan-assets-jp-sortet/main/';
@@ -247,8 +248,8 @@ export const ROUTES: Required<RouteConfig>[] = [
     label: 'Honor Icons',
     view: HonorIconsPage,
     backgroundClass:
-      'bg-gradient-to-br from-amber-800 via-yellow-700 to-amber-800',
-    patternColor: '#fff2',
+      'bg-gradient-to-b from-amber-950 via-yellow-900 to-amber-950',
+    patternColor: '#fff1',
     type: 'primary',
     disabled: false,
   },
@@ -259,6 +260,16 @@ export const ROUTES: Required<RouteConfig>[] = [
     backgroundClass:
       'bg-gradient-to-r from-gray-950 via-rose-950 to-gray-950',
     patternColor: '#0003',
+    type: 'primary',
+    disabled: false,
+  },
+  {
+    path: 'dungeons',
+    label: 'Dungeons',
+    view: DungeonsPage,
+    backgroundClass:
+      'bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-950',
+    patternColor: '#0002',
     type: 'primary',
     disabled: false,
   },

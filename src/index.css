@@ -11,7 +11,34 @@
   }
 }
 
-/* Custom Scrollbar */
+/* Make custom scrollbar the default */
+@layer base {
+  * {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    transition: background-color 0.2s;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Custom Scrollbar (for explicit use) */
 @layer utilities {
   .custom-scrollbar {
     scrollbar-width: thin; /* Firefox */
