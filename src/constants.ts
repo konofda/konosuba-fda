@@ -23,6 +23,7 @@ import { TitlePage } from './components/pages/TitlePage';
 import { VideosPage } from './components/pages/VideosPage';
 import { EnemiesPage } from './components/pages/EnemiesPage';
 import { DungeonsPage } from './components/pages/DungeonsPage';
+import { EventsPage } from './components/pages/EventsPage';
 
 export const ASSET_URL_BASE =
   'https://raw.githubusercontent.com/HaiKonofanDesu/konofan-assets-jp-sortet/main/';
@@ -269,6 +270,16 @@ export const ROUTES: Required<RouteConfig>[] = [
     view: DungeonsPage,
     backgroundClass:
       'bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-950',
+    patternColor: '#0002',
+    type: 'primary',
+    disabled: false,
+  },
+  {
+    path: 'events',
+    label: 'Events',
+    view: EventsPage,
+    backgroundClass:
+      'bg-gradient-to-r from-violet-950 via-purple-950 to-violet-950',
     patternColor: '#0002',
     type: 'primary',
     disabled: false,
