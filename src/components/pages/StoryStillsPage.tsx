@@ -18,9 +18,7 @@ export function StoryStillsPage() {
   const [showOnlyWithIcons, setShowOnlyWithIcons] = useState(true);
   const { data, isLoading, error } = useStoryStillData();
 
-  const stills = data?.filter(still => 
-    showOnlyWithIcons ? !!still.icon_still : true
-  ) ?? [];
+  const stills = data?.filter((still) => (showOnlyWithIcons ? !!still.icon_still : true)) ?? [];
 
   const controls = (
     <div className="flex items-center gap-4">
@@ -29,21 +27,11 @@ export function StoryStillsPage() {
         className={`
           flex items-center gap-2 px-3 py-1 rounded
           transition-all duration-200 text-sm
-          ${
-            showOnlyWithIcons
-              ? 'text-gray-300 hover:text-white'
-              : 'bg-white text-gray-800 shadow'
-          }
+          ${showOnlyWithIcons ? 'text-gray-300 hover:text-white' : 'bg-white text-gray-800 shadow'}
         `}
       >
-        {showOnlyWithIcons ? (
-          <Eye className="w-4 h-4" />
-        ) : (
-          <EyeOff className="w-4 h-4" />
-        )}
-        <span className="font-medium">
-          {showOnlyWithIcons ? 'Showing only with icons' : 'Showing all stills'}
-        </span>
+        {showOnlyWithIcons ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+        <span className="font-medium">{showOnlyWithIcons ? 'Showing only with icons' : 'Showing all stills'}</span>
       </button>
       <ZoomControls options={sizeOptions} value={scale} onChange={setScale} />
     </div>
@@ -53,9 +41,7 @@ export function StoryStillsPage() {
     return (
       <>
         <Header title="Story Stills">{controls}</Header>
-        <div className="container mx-auto py-8 text-center text-white">
-          Loading stills...
-        </div>
+        <div className="container mx-auto py-8 text-center text-white">Loading stills...</div>
       </>
     );
   }
@@ -64,9 +50,7 @@ export function StoryStillsPage() {
     return (
       <>
         <Header title="Story Stills">{controls}</Header>
-        <div className="container mx-auto py-8 text-center text-red-500">
-          Error loading stills: {error.message}
-        </div>
+        <div className="container mx-auto py-8 text-center text-red-500">Error loading stills: {error.message}</div>
       </>
     );
   }
@@ -85,15 +69,10 @@ export function StoryStillsPage() {
           {stills.map((still) => {
             const hasIcon = !!still.icon_still;
             const hasStill = !!still.still;
-            const iconSrc = hasIcon
-              ? ASSET_URL_BASE + still.icon_still
-              : './img/frame_missing.png';
+            const iconSrc = hasIcon ? ASSET_URL_BASE + still.icon_still : getFallbackIconUrl(still.id);
 
             return (
-              <div
-                key={still.id}
-                className="group inline-block align-top m-1 relative"
-              >
+              <div key={still.id} className="group inline-block align-top m-1 relative">
                 <div
                   onClick={hasStill ? () => handleClick(still.still) : undefined}
                   className={`
@@ -121,15 +100,9 @@ export function StoryStillsPage() {
                       text-center whitespace-nowrap
                     "
                   >
-                    <p className="text-white font-bold text-lg">
-                      ID: {still.id}
-                    </p>
-                    {!hasIcon && (
-                      <p className="text-yellow-400 text-sm">Missing icon</p>
-                    )}
-                    {!hasStill && (
-                      <p className="text-yellow-400 text-sm">Missing still</p>
-                    )}
+                    <p className="text-white font-bold text-lg">ID: {still.id}</p>
+                    {!hasIcon && <p className="text-yellow-400 text-sm">Missing icon</p>}
+                    {!hasStill && <p className="text-yellow-400 text-sm">Missing still</p>}
                   </div>
                 </div>
               </div>
@@ -139,4 +112,8 @@ export function StoryStillsPage() {
       </div>
     </>
   );
+}
+
+function getFallbackIconUrl(id: string) {
+  return `https://raw.githubusercontent.com/konofda/konosuba-fda-custom-icons/refs/heads/main/StoryStills_webp95/${id}.webp`;
 }

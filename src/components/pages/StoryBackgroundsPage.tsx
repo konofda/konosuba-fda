@@ -21,8 +21,8 @@ export function StoryBackgroundsPage() {
   const backgrounds = useMemo(() => {
     if (!data) return [];
     return data
-      .filter(bg => bg.bg) // Remove entries without bg path
-      .filter(bg => showOnlyWithIcons ? !!bg.icon_bg : true);
+      .filter((bg) => bg.bg) // Remove entries without bg path
+      .filter((bg) => (showOnlyWithIcons ? !!bg.icon_bg : true));
   }, [data, showOnlyWithIcons]);
 
   const controls = (
@@ -32,21 +32,11 @@ export function StoryBackgroundsPage() {
         className={`
           flex items-center gap-2 px-3 py-1 rounded
           transition-all duration-200 text-sm
-          ${
-            showOnlyWithIcons
-              ? 'text-gray-300 hover:text-white'
-              : 'bg-white text-gray-800 shadow'
-          }
+          ${showOnlyWithIcons ? 'text-gray-300 hover:text-white' : 'bg-white text-gray-800 shadow'}
         `}
       >
-        {showOnlyWithIcons ? (
-          <Eye className="w-4 h-4" />
-        ) : (
-          <EyeOff className="w-4 h-4" />
-        )}
-        <span className="font-medium">
-          {showOnlyWithIcons ? 'Showing only with icons' : 'Showing all backgrounds'}
-        </span>
+        {showOnlyWithIcons ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+        <span className="font-medium">{showOnlyWithIcons ? 'Showing only with icons' : 'Showing all backgrounds'}</span>
       </button>
       <ZoomControls options={sizeOptions} value={scale} onChange={setScale} />
     </div>
@@ -56,9 +46,7 @@ export function StoryBackgroundsPage() {
     return (
       <>
         <Header title="Story Backgrounds">{controls}</Header>
-        <div className="container mx-auto py-8 text-center text-white">
-          Loading backgrounds...
-        </div>
+        <div className="container mx-auto py-8 text-center text-white">Loading backgrounds...</div>
       </>
     );
   }
@@ -89,10 +77,7 @@ export function StoryBackgroundsPage() {
             const hasIcon = !!story.icon_bg;
 
             return (
-              <div
-                key={story.id}
-                className="group inline-block align-top m-2 relative"
-              >
+              <div key={story.id} className="group inline-block align-top m-2 relative">
                 <div
                   onClick={() => handleClick(story.bg)}
                   className="
@@ -101,11 +86,7 @@ export function StoryBackgroundsPage() {
                   "
                 >
                   <LoadingImage
-                    src={
-                      hasIcon
-                        ? ASSET_URL_BASE + story.icon_bg
-                        : './img/frame_missing.png'
-                    }
+                    src={hasIcon ? ASSET_URL_BASE + story.icon_bg : getFallbackIconUrl(story.id)}
                     placeholderSrc="./img/middle_icon_placeholder.png"
                     alt={`Background ${story.id}`}
                   />
@@ -124,12 +105,8 @@ export function StoryBackgroundsPage() {
                     text-center whitespace-nowrap
                   "
                   >
-                    <p className="text-white font-bold text-lg">
-                      ID: {story.id}
-                    </p>
-                    {!hasIcon && (
-                      <p className="text-yellow-400 text-sm">Missing icon</p>
-                    )}
+                    <p className="text-white font-bold text-lg">ID: {story.id}</p>
+                    {!hasIcon && <p className="text-yellow-400 text-sm">Missing icon</p>}
                   </div>
                 </div>
               </div>
@@ -139,4 +116,8 @@ export function StoryBackgroundsPage() {
       </div>
     </>
   );
+}
+
+function getFallbackIconUrl(id: string) {
+  return `https://raw.githubusercontent.com/konofda/konosuba-fda-custom-icons/refs/heads/main/StoryBackgrounds_webp95/${id}.webp`;
 }
