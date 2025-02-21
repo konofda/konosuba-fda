@@ -143,7 +143,7 @@ function StageDetails({ stage, area }: { stage: Stage; area: Area }) {
   }, [stage.bgm, stage.bgm_boss]);
 
   return (
-    <div className="space-y-6" key={stage.id}>
+    <div className="space-y-6 w-full overflow-hidden" key={stage.id}>
       <div>
         <h2 className="text-2xl font-bold text-white mb-4">{stage.title}</h2>
         <div className="space-y-4">
@@ -435,7 +435,7 @@ export function DungeonsPage() {
 
         <div
           className={`
-          w-[400px] border-l border-white/10 overflow-auto custom-scrollbar
+          w-[30vw] min-w-[400px] border-l border-white/10 overflow-auto custom-scrollbar
           transition-all duration-300
           ${selectedStage ? 'translate-x-0' : 'translate-x-full'}
         `}
